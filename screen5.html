@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #app {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 600px;
+      text-align: center;
+    }
+
+    input {
+      width: calc(100% - 16px);
+      padding: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    button.edit, button.delete {
+      background-color: #2196F3;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    button.delete {
+      background-color: #f44336;
+    }
+
+    button.edit:hover, button.delete:hover {
+      background-color: #0b7dda;
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+    }
+  </style>
+  <title>Traffic Controller Information</title>
+</head>
+<body>
+  <div id="app">
+    <h2>Traffic Controller Information</h2>
+    <input type="text" id="nameInput" placeholder="Enter traffic controller name">
+    <input type="text" id="phoneInput" placeholder="Enter phone number">
+    <input type="text" id="salaryInput" placeholder="Enter salary">
+    <input type="text" id="addressInput" placeholder="Enter address">
+    <input type="date" id="examDateInput">
+    <button onclick="addController()">Add Traffic Controller</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone Number</th>
+          <th>Salary</th>
+          <th>Address</th>
+          <th>Last Medical Exam Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="display"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function addController() {
+      var nameInput = document.getElementById("nameInput").value;
+      var phoneInput = document.getElementById("phoneInput").value;
+      var salaryInput = document.getElementById("salaryInput").value;
+      var addressInput = document.getElementById("addressInput").value;
+      var examDateInput = document.getElementById("examDateInput").value;
+      var displayTable = document.getElementById("display");
+
+      if (nameInput.trim() !== "" && phoneInput.trim() !== "" && salaryInput.trim() !== "" && addressInput.trim() !== "" && examDateInput.trim() !== "") {
+        var newRow = displayTable.insertRow();
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+        var cell5 = newRow.insertCell(4);
+        var cell6 = newRow.insertCell(5);
+
+        cell1.innerHTML = nameInput;
+        cell2.innerHTML = phoneInput;
+        cell3.innerHTML = "$" + salaryInput;
+        cell4.innerHTML = addressInput;
+        cell5.innerHTML = examDateInput;
+        cell6.innerHTML = '<div class="row-actions">' +
+                          '<button class="edit" onclick="editController(this)">Edit</button>' +
+                          '<button class="delete" onclick="deleteController(this)">Delete</button>' +
+                          '</div>';
+
+        // Clear input fields
+        document.getElementById("nameInput").value = "";
+        document.getElementById("phoneInput").value = "";
+        document.getElementById("salaryInput").value = "";
+        document.getElementById("addressInput").value = "";
+        document.getElementById("examDateInput").value = "";
+      }
+    }
+
+    function editController(button) {
+      var row = button.parentNode.parentNode.parentNode;
+      var name = row.cells[0].innerHTML;
+      var phone = row.cells[1].innerHTML;
+      var salary = row.cells[2].innerHTML.replace("$", ""); // Remove dollar sign
+      var address = row.cells[3].innerHTML;
+      var examDate = row.cells[4].innerHTML;
+
+      var newName = prompt("Edit traffic controller name:", name);
+      var newPhone = prompt("Edit phone number:", phone);
+      var newSalary = prompt("Edit salary:", salary);
+      var newAddress = prompt("Edit address:", address);
+      var newExamDate = prompt("Edit last medical exam date:", examDate);
+
+      if (newName !== null && newName.trim() !== "" &&
+          newPhone !== null && newPhone.trim() !== "" &&
+          newSalary !== null && newSalary.trim() !== "" &&
+          newAddress !== null && newAddress.trim() !== "" &&
+          newExamDate !== null && newExamDate.trim() !== "") {
+        row.cells[0].innerHTML = newName;
+        row.cells[1].innerHTML = newPhone;
+        row.cells[2].innerHTML = "$" + newSalary;
+        row.cells[3].innerHTML = newAddress;
+        row.cells[4].innerHTML = newExamDate;
+      }
+    }
+
+    function deleteController(button) {
+      var row = button.parentNode.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+    }
+  </script>
+</body>
+</html>

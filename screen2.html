@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #app {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 400px;
+      text-align: center;
+    }
+
+    input {
+      width: calc(100% - 16px);
+      padding: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    button.edit, button.delete {
+      background-color: #2196F3;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    button.delete {
+      background-color: #f44336;
+    }
+
+    button.edit:hover, button.delete:hover {
+      background-color: #0b7dda;
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+    }
+  </style>
+  <title>Airplane Information</title>
+</head>
+<body>
+  <div id="app">
+    <h2>Airplane Information</h2>
+    <input type="text" id="nameInput" placeholder="Enter airplane name">
+    <input type="text" id="modelInput" placeholder="Enter airplane model">
+    <button onclick="displayAirplane()">Display Airplane</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Model</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="display"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function displayAirplane() {
+      var nameInput = document.getElementById("nameInput").value;
+      var modelInput = document.getElementById("modelInput").value;
+      var displayTable = document.getElementById("display");
+
+      if (nameInput.trim() !== "" && modelInput.trim() !== "") {
+        var newRow = displayTable.insertRow();
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+
+        cell1.innerHTML = nameInput;
+        cell2.innerHTML = modelInput;
+        cell3.innerHTML = '<div class="row-actions">' +
+                          '<button class="edit" onclick="editAirplane(this)">Edit</button>' +
+                          '<button class="delete" onclick="deleteAirplane(this)">Delete</button>' +
+                          '</div>';
+
+        nameInput.value = "";
+        modelInput.value = "";
+      }
+    }
+
+    function editAirplane(button) {
+      var row = button.parentNode.parentNode.parentNode;
+      var name = row.cells[0].innerHTML;
+      var model = row.cells[1].innerHTML;
+
+      var newName = prompt("Edit airplane name:", name);
+      var newModel = prompt("Edit airplane model:", model);
+
+      if (newName !== null && newName.trim() !== "" && newModel !== null && newModel.trim() !== "") {
+        row.cells[0].innerHTML = newName;
+        row.cells[1].innerHTML = newModel;
+      }
+    }
+
+    function deleteAirplane(button) {
+      var row = button.parentNode.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+    }
+  </script>
+</body>
+</html>
